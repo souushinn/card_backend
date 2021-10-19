@@ -3,7 +3,7 @@ package repository
 import (
 	"context"
 
-	"../model"
+	"github.com/souushinn/cardGo/domain/model"
 )
 
 type CardRepository interface {

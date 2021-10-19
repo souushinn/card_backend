@@ -1,12 +1,12 @@
 package main
 
 import (
-	"/interfaces"
 	"fmt"
-	"infra/repository"
+	"net/http"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
+	"github.com/souushinn/cardGo/interfaces"
 )
 
 const (
@@ -22,9 +22,9 @@ func main() {
 	} else {
 		fmt.Println("DB接続成功")
 	}
-	server := interfaces.NewServer(interfaces.ServerParams{
-		CardRepository: repository.NewCardRepository(db),
-	})
+	server := interfaces.NewServer(interfaces.ServerParams{})
+
+	http.ListenAndServe(":8080", nil)
 }
 
 // SQLConnect DB接続
@@ -37,5 +37,8 @@ func sqlConnect() (database *gorm.DB, err error) {
 
 	CONNECT := USER + ":" + PASS + "@" + PROTOCOL + "/" + DBNAME + "?charset=utf8&parseTime=true&loc=Asia%2FTokyo"
 
-	return gorm.Open(DBMS, CONNECT)
+	var db *gorm.DB
+	db, err = gorm.Open(DBMS, CONNECT)
+
+	return db, nil
 }
